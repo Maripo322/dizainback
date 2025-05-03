@@ -148,8 +148,17 @@ export default {
 </script>
 
 <style scoped>
-.quiz-view {
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -157,6 +166,12 @@ h1 {
   color: #2d3436;
   margin-bottom: 24px;
   padding: 0 16px;
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+  margin-top: auto;
 }
 
 .options button {

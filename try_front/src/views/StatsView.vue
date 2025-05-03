@@ -46,23 +46,25 @@ export default {
 </script>
 
 <style scoped>
-div {
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
   padding: 16px;
+  background: white;
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 h1 {
   font-size: 24px;
   color: #2d3436;
   margin-bottom: 24px;
-  padding: 0 16px;
-}
-
-div[data-v-xxxxxx] {
-  background: white;
-  padding: 24px;
-  margin: 16px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 p {

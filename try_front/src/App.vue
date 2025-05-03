@@ -45,31 +45,26 @@ export default {
 <style>
 #app {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  padding-bottom: 72px;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: #f8f9fa;
   color: #2d3436;
+  padding-bottom: 64px; /* Добавляем отступ снизу */
 }
 
 .status-bar {
   padding: 12px 16px;
   background: #ffffff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
-.connected {
-  color: #2ecc71;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.disconnected {
-  color: #e74c3c;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+router-view {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
 }
 
 .bottom-nav {
@@ -83,7 +78,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   box-shadow: 0 -2px 12px rgba(0,0,0,0.05);
-  border-top: none;
+  z-index: 1000; /* Убедимся что панель поверх контента */
 }
 
 .bottom-nav button {

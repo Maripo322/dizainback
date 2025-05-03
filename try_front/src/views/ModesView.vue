@@ -33,8 +33,18 @@ export default {
 </script>
 
 <style scoped>
-.modes-view {
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .mode-buttons {
@@ -50,7 +60,6 @@ export default {
   background: white;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border: none;
-  transition: all 0.2s ease;
 }
 
 .mode-buttons button:hover {
