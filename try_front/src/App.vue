@@ -51,7 +51,7 @@ export default {
   overflow: hidden;
   background: #f8f9fa;
   color: #2d3436;
-  padding-bottom: 64px; /* Добавляем отступ снизу */
+  padding-bottom: 64px; /* отступ */
 }
 
 .status-bar {
