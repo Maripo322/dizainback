@@ -37,7 +37,10 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 24px;
+  width: 100%;
+  padding-bottom: 32px;
 }
 
 h1 {
@@ -45,17 +48,18 @@ h1 {
   color: #2d3436;
   text-align: center;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .mode-buttons {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 16px;
   padding: 0 20px;
   max-width: 500px;
-  margin: 0 auto;
   width: 100%;
 }
 
@@ -68,6 +72,7 @@ h1 {
   border: none;
   width: 100%;
   transition: all 0.2s ease;
+  min-width: 200px;
 }
 
 .mode-buttons button:hover {

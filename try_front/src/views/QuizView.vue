@@ -3,37 +3,51 @@
     <h1>Вопрос дня</h1>
 
     <!-- Кнопка запуска -->
-    <div v-if="!quizStarted">
+    <div v-if="!quizStarted" class="start-button-container">
       <button @click="startQuiz">Начать</button>
     </div>
 
     <!-- Ошибка -->
     <div v-if="loadError">
-      <p style="color: red;">{{ loadError }}</p>
+      <p class="error-message">{{ loadError }}</p>
     </div>
 
-    <!-- Вопрос -->
-    <div v-if="currentWord">
-      <p><strong>Английское слово:</strong> {{ currentWord.word_eng }}</p>
-      <p><strong>Повторение:</strong> {{ currentWord.was_in_repeat ? 'Да' : 'Нет' }}</p>
+    <!-- Контент вопроса -->
+    <div class="quiz-content">
+      <div v-if="currentWord" class="question-container">
+        <p><strong>Английское слово:</strong> {{ currentWord.word_eng }}</p>
+        <p><strong>Повторение:</strong> {{ currentWord.was_in_repeat ? 'Да' : 'Нет' }}</p>
 
-      <div class="options">
-        <button
-          v-for="(option, index) in options"
-          :key="index"
-          :disabled="answered"
-          @click="submitAnswer(option)"
-        >
-          {{ option }}
-        </button>
+        <div class="options-wrapper">
+          <div class="options">
+            <button
+              v-for="(option, index) in options"
+              :key="index"
+              @click="submitAnswer(option)"
+              :disabled="answered"
+              :class="{ 
+                'correct-answer': answered && option === currentWord.word_rus,
+                'wrong-answer': answered && option !== currentWord.word_rus 
+              }"
+            >
+              {{ option }}
+              <span v-if="answered && option === currentWord.word_rus">✅</span>
+              <span v-if="answered && option !== currentWord.word_rus">❌</span>
+            </button>
+          </div>
+          
+          <transition name="feedback">
+            <div v-if="feedback" class="feedback-container">
+              <p>{{ feedback }}</p>
+            </div>
+          </transition>
+        </div>
       </div>
 
-      <p v-if="answered"><strong>{{ feedback }}</strong></p>
-    </div>
-
-    <!-- Загрузка -->
-    <div v-else-if="loading">
-      <p>Загрузка...</p>
+      <!-- Загрузка -->
+      <div v-else-if="loading" class="loading">
+        <p>Загрузка...</p>
+      </div>
     </div>
   </div>
 </template>
@@ -70,19 +84,15 @@ export default {
       this.options = []
 
       try {
-        // Получаем основное слово
         const wordResponse = await axios.get(`/api/quiz/${this.tg_id}`)
-        
         if (wordResponse.data.error) {
           this.loadError = wordResponse.data.error
           return
         }
 
-        // Получаем 3 случайных слова для вариантов
         const randomWordsResponse = await axios.get(`/api/random-words/3`)
         const randomOptions = randomWordsResponse.data
 
-        // Формируем данные
         this.currentWord = {
           word_id: wordResponse.data.word_id,
           word_eng: wordResponse.data.word_eng,
@@ -90,7 +100,6 @@ export default {
           was_in_repeat: wordResponse.data.was_in_repeat
         }
 
-        // Создаем варианты ответов
         this.options = [this.currentWord.word_rus, ...randomOptions]
         this.shuffleOptions()
 
@@ -103,7 +112,6 @@ export default {
     },
 
     shuffleOptions() {
-      // Перемешиваем варианты Fisher-Yates алгоритмом
       for (let i = this.options.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.options[i], this.options[j]] = [this.options[j], this.options[i]]
@@ -140,7 +148,9 @@ export default {
         this.currentWord = null
         this.feedback = ''
         this.answered = false
-        this.startQuiz()
+        this.$nextTick(() => {
+          this.startQuiz()
+        })
       }, 2000)
     }
   }
@@ -148,18 +158,21 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  flex: 1;
+.quiz-view {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 24px;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 32px;
+}
+
+.start-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
 }
 
 h1 {
@@ -169,13 +182,23 @@ h1 {
   text-align: center;
 }
 
-.centered {
-  flex: 1;
+.quiz-content {
+  width: 100%;
+  max-width: 600px;
+}
+
+.question-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+
+.options-wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .options {
@@ -183,25 +206,78 @@ h1 {
   gap: 12px;
   width: 100%;
   max-width: 500px;
-  margin-top: auto;
+  margin-bottom: 24px;
 }
 
 .options button {
   padding: 16px;
-  text-align: left;
+  text-align: center;
   background: white;
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  width: 100%;
+  min-width: 200px;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-.options button:hover:not(:disabled) {
-  border-color: #0984e3;
-  background: #f8fbff;
-}
-
-p {
-  margin: 16px;
-  color: #636e72;
+.feedback-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-top: 16px;
   text-align: center;
+}
+
+.feedback-container p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2d3436;
+}
+
+.loading {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  color: #d63031;
+  font-weight: bold;
+  text-align: center;
+}
+
+.correct-answer {
+  border-color: #00b894 !important;
+  background: #f0fff4 !important;
+}
+
+.wrong-answer {
+  border-color: #d63031 !important;
+  background: #fff5f5 !important;
+}
+
+/* Анимация фидбека */
+.feedback-enter-active {
+  transition: all 0.3s ease;
+}
+
+.feedback-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.feedback-leave-active {
+  transition: all 0.2s ease;
+}
+
+.feedback-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>
