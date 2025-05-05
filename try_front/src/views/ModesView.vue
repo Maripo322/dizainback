@@ -33,24 +33,30 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.modes-view {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 24px;
 }
 
-.content {
+h1 {
+  font-size: 24px;
+  color: #2d3436;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.mode-buttons {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.mode-buttons {
-  display: grid;
   gap: 16px;
-  padding: 16px;
+  padding: 0 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .mode-buttons button {
@@ -60,9 +66,12 @@ export default {
   background: white;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border: none;
+  width: 100%;
+  transition: all 0.2s ease;
 }
 
 .mode-buttons button:hover {
   box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
 }
 </style>

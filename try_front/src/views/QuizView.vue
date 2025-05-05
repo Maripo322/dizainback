@@ -152,25 +152,37 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 16px;
 }
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 24px;
 }
 
 h1 {
   font-size: 24px;
   color: #2d3436;
   margin-bottom: 24px;
-  padding: 0 16px;
+  text-align: center;
+}
+
+.centered {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .options {
   display: grid;
   gap: 12px;
+  width: 100%;
+  max-width: 500px;
   margin-top: auto;
 }
 
@@ -190,5 +202,6 @@ h1 {
 p {
   margin: 16px;
   color: #636e72;
+  text-align: center;
 }
 </style>
